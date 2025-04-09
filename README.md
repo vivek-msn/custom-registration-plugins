@@ -14,5 +14,5 @@ This WordPress plugin allows custom fields in user registration and stores data 
 ## Help
 - Use this url for http://localhost/plugindevelopment/wp-login.php?action=register
 - Above url is not same in your machine so please adjust according to folder path
-
+- Use shortcode [custom_registration_form]
 

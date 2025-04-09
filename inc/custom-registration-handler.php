@@ -94,3 +94,64 @@ add_filter('upload_mimes', function($mimes) {
     return $mimes;
 });
 
+
+
+// Update validation and sanitization for shortcode
+
+    add_action('init', 'crp_handle_form_submission');
+
+    function crp_handle_form_submission() {
+        if (!isset($_POST['crp_submit'])) return;
+
+        // Basic nonce check
+        if (!isset($_POST['crp_form_nonce']) || !wp_verify_nonce($_POST['crp_form_nonce'], 'crp_form_action')) {
+            wp_redirect(add_query_arg('crp_error', 'Invalid form submission', wp_get_referer()));
+            exit;
+        }
+
+        // Validate and sanitize input
+        $name = sanitize_text_field($_POST['crp_name']);
+        $email = sanitize_email($_POST['crp_email']);
+        $degree = sanitize_text_field($_POST['crp_degree']);
+        $year = sanitize_text_field($_POST['crp_year']);
+        $percentage = sanitize_text_field($_POST['crp_percentage']);
+        $phone = sanitize_text_field($_POST['crp_phone']);
+
+        if (empty($name) || empty($email)) {
+            wp_redirect(add_query_arg('crp_error', 'Name and Email are required.', wp_get_referer()));
+            exit;
+        }
+
+        // Handle file upload
+        if (!empty($_FILES['crp_pdf']['name'])) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            require_once ABSPATH . 'wp-admin/includes/media.php';
+            require_once ABSPATH . 'wp-admin/includes/image.php';
+            $uploaded = media_handle_upload('crp_pdf', 0);
+            if (is_wp_error($uploaded)) {
+                wp_redirect(add_query_arg('crp_error', 'File upload failed.', wp_get_referer()));
+                exit;
+            }
+            $file_url = wp_get_attachment_url($uploaded);
+        } else {
+            wp_redirect(add_query_arg('crp_error', 'Please upload a file.', wp_get_referer()));
+            exit;
+        }
+
+        // Save user data in custom table
+        global $wpdb;
+        $table = $wpdb->prefix . 'custom_user_data';
+        $wpdb->insert($table, [
+            'user_id' => get_current_user_id(),
+            'name' => $name,
+            'email' => $email,
+            'degree' => $degree,
+            'passing_year' => $year,
+            'percentage' => $percentage,
+            'phone_number' => $phone,
+            'file_url' => $file_url
+        ]);
+
+        wp_redirect(add_query_arg('crp_success', 'Form submitted successfully!', wp_get_referer()));
+        exit;
+    }

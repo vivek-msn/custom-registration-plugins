@@ -14,6 +14,8 @@ define('CRP_PLUGIN_PATH', plugin_dir_path(__FILE__));
 require_once CRP_PLUGIN_PATH . 'inc/custom-registration-fields.php';
 require_once CRP_PLUGIN_PATH . 'inc/custom-registration-handler.php';
 require_once CRP_PLUGIN_PATH . 'admin/admin-page.php';
+require_once CRP_PLUGIN_PATH . 'inc/registration-form-shortcode.php';
+
 
 
 register_activation_hook(__FILE__, 'custom_registration_plugin_activate');

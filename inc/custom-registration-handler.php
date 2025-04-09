@@ -10,7 +10,9 @@ function custom_registration_fields_validation($errors, $sanitized_user_login, $
     if (empty($_POST['percentage'])) {
         $errors->add('percentage_error', __('Please enter your passing percentage.', 'crp'));
     }
-
+    if (empty($_POST['phone_number'])) {
+        $errors->add('phone_number_error', __('Please enter your phone number.', 'crp'));
+    }    
     return $errors;
 }
 add_filter('registration_errors', 'custom_registration_fields_validation', 10, 3);
@@ -27,6 +29,9 @@ function custom_save_registration_fields($user_id) {
     if (!empty($_POST['percentage'])) {
         update_user_meta($user_id, 'percentage', sanitize_text_field($_POST['percentage']));
     }
+    if (!empty($_POST['phone_number'])) {
+        update_user_meta($user_id, 'phone_number', sanitize_text_field($_POST['phone_number']));
+    }    
 }
 add_action('user_register', 'custom_save_registration_fields');
 
@@ -49,6 +54,8 @@ function crp_handle_user_registration($user_id) {
     $degree = sanitize_text_field($_POST['degree']);
     $year = sanitize_text_field($_POST['passing_year']);
     $percentage = sanitize_text_field($_POST['percentage']);
+    $phone_number = sanitize_text_field($_POST['phone_number']);
+
 
     // Handle file upload
     $file_url = '';
@@ -76,6 +83,7 @@ function crp_handle_user_registration($user_id) {
             'passing_year'  => $year,
             'percentage'    => $percentage,
             'file_url'       => $file_url,
+            'phone_number'   => $phone_number,
         ]
     );
 }

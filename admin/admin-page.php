@@ -34,13 +34,15 @@ function crp_display_custom_table() {
             $degree = sanitize_text_field($_POST['degree']);
             $year = sanitize_text_field($_POST['passing_year']);
             $percentage = sanitize_text_field($_POST['percentage']);
+            $phone_number = sanitize_text_field($_POST['phone_number']);
 
             $wpdb->update(
                 $table,
                 [
                     'degree' => $degree,
                     'passing_year' => $year,
-                    'percentage' => $percentage
+                    'percentage' => $percentage,
+                    'phone_number' => $phone_number
                 ],
                 ['id' => $id]
             );
@@ -73,6 +75,10 @@ function crp_display_custom_table() {
                             <th>Percentage</th>
                             <td><input type="text" name="percentage" value="<?php echo esc_attr($record->percentage); ?>" class="regular-text"></td>
                         </tr>
+                        <tr>
+                            <th>Phone Number</th>
+                            <td><input type="text" name="phone_number" value="<?php echo esc_attr($record->phone_number); ?>" class="regular-text"></td>
+                        </tr>
                     </table>
                     <?php wp_nonce_field('crp_update_user_' . $record->id); ?>
                     <p><input type="submit" name="update_crp_user" value="Update" class="button button-primary"></p>
@@ -99,6 +105,7 @@ function crp_display_custom_table() {
                     <th>Degree</th>
                     <th>Passing Year</th>
                     <th>Percentage</th>
+                    <th>Phone Number</th>
                     <th>File</th>
                     <th>Actions</th>
                 </tr>
@@ -113,6 +120,7 @@ function crp_display_custom_table() {
                         <td><?php echo esc_html($row->degree); ?></td>
                         <td><?php echo esc_html($row->passing_year); ?></td>
                         <td><?php echo esc_html($row->percentage); ?></td>
+                        <td><?php echo esc_html($row->phone_number); ?></td>
                         <td>
                             <?php if (!empty($row->file_url)) {
                                 echo '<a href="' . esc_url(wp_get_attachment_url($row->file_url)) . '" target="_blank">View File</a>';

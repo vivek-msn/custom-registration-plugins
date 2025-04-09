@@ -15,6 +15,10 @@ function custom_add_registration_fields() {
             <input type="text" name="percentage" id="percentage" class="input" value="" size="25" /></label>
     </p>
     <p>
+        <label for="phone_number">Phone Number<br/>
+            <input type="text" name="phone_number" id="phone_number" class="input" value="" size="25" /></label>
+    </p>
+    <p>
         <label for="file_url">Upload Your File (PDF)<br/>
             <input type="file" name="file_url" id="file_url" /></label>
     </p>

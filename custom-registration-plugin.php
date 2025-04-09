@@ -3,7 +3,7 @@
 Plugin Name: Custom Registration Plugin
 Plugin URI: https://viveksaini.in/
 Description: Adds custom fields to the registration form and stores data in a custom DB table.
-Version: 1.1
+Version: 1.2
 Author: Vivek Saini
 */
 
@@ -21,7 +21,7 @@ register_activation_hook(__FILE__, 'custom_registration_plugin_activate');
 function custom_registration_plugin_activate() {
     global $wpdb;
 
-    $table_name = $wpdb->prefix . 'custom_user_data'; // example: wp_custom_user_data
+    $table_name = $wpdb->prefix . 'custom_user_data'; 
     $charset_collate = $wpdb->get_charset_collate();
 
     $sql = "CREATE TABLE $table_name (
@@ -33,6 +33,7 @@ function custom_registration_plugin_activate() {
         passing_year varchar(10) NOT NULL,
         percentage varchar(10) NOT NULL,
         file_url varchar(255) DEFAULT '' NOT NULL,
+        phone_number varchar(20),
         PRIMARY KEY  (id)
     ) $charset_collate;";
 
